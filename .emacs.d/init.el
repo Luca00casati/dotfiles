@@ -1,4 +1,4 @@
-;;load misc.el
+;;load misc
 ;; Don't show the splash screen
 (setq inhibit-startup-message t)
 ;;(menu-bar-mode -1)
@@ -24,6 +24,10 @@
 ;;cua
 (cua-mode t)
 
+;;pdf
+;;(setq pdf-view-use-scaling nil)
+(setq doc-view-resolution 300)
+
 ;;disable line number for some modes
 (dolist (mode '(org-mode-hook
 		term-mode-hook
@@ -45,7 +49,8 @@
 ;;startup screen
 (when (get-buffer "*scratch*")
   (recentf-open-files))
-;;load plugins.el
+
+;;load plugins
 ;; Initialize package sources
 (require 'package)
 
@@ -63,25 +68,31 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(use-package modus-themes)
+;;(use-package modus-themes)
+(use-package gruber-darker-theme)
 
-(use-package elisp-format)
+(use-package pdf-tools)
 
-(use-package ivy 
-:init (ivy-mode 1)
-:diminish 
-:bind (("C-s" . swiper) :map ivy-minibuffer-map ("TAB" . ivy-alt-done) 
-("C-l" . ivy-alt-done) 
-("C-j" . ivy-next-line) 
-("C-k" . ivy-previous-line) 
-:map ivy-switch-buffer-map ("C-k" . ivy-previous-line) 
-("C-l" . ivy-done) 
-("C-d" . ivy-switch-buffer-kill) 
-:map ivy-reverse-i-search-map ("C-k" . ivy-previous-line) 
-("C-d" . ivy-reverse-i-search-kill)))
+(use-package helm)
 
 (use-package which-key 
 :init (which-key-mode) 
 :diminish which-key-mode 
 :config (setq which-key-idle-delay 0.3))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(gruber-darker))
+ '(custom-safe-themes
+   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd" default))
+ '(package-selected-packages
+   '(pdf-tools helm gruber-darker-theme which-key)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
