@@ -1,9 +1,8 @@
-;;load misc
 ;; Don't show the splash screen
 (setq inhibit-startup-message t)
-;;(menu-bar-mode -1)
-;;(tool-bar-mode -1)
-(scroll-bar-mode -1)
+;;(menu-bar-mode 0)
+;;(tool-bar-mode 0)
+(scroll-bar-mode 0)
 (setq ring-bell-function 'ignore)
 
 ;; Display line numbers in every buffer
@@ -31,6 +30,9 @@
 ;;ido
 (ido-mode t)
 
+;;pair
+(electric-pair-mode 1)
+
 ;;pdf
 ;;(setq pdf-view-use-scaling nil)
 (setq doc-view-resolution 300)
@@ -57,6 +59,50 @@
 (when (get-buffer "*scratch*")
   (recentf-open-files))
 
+;;dired config
+(setq dired-listing-switches "-alh")
+(setq ls-lisp-dirs-first t)
+;;(setq ls-lisp-ignore-case t)
+
+(when (>= emacs-major-version 28)
+  (setq dired-kill-when-opening-new-dired-buffer t))
+
+(when (< emacs-major-version 28)
+  (progn
+    (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file) ; was dired-advertised-find-file
+    (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file ".."))) ; was dired-up-directory
+    ))
+
+(defun my-dired-init ()
+  (interactive)
+
+  (define-key dired-mode-map (kbd ",") #'dired-prev-dirline)
+  (define-key dired-mode-map (kbd ".") #'dired-next-dirline)
+
+  (define-key dired-mode-map (kbd "1") #'dired-do-shell-command)
+  (define-key dired-mode-map (kbd "6") #'dired-up-directory)
+  (define-key dired-mode-map (kbd "9") #'dired-hide-details-mode)
+
+  (define-key dired-mode-map (kbd "b") #'dired-do-byte-compile)
+
+  (define-key dired-mode-map (kbd "`") #'dired-flag-backup-files)
+
+  (define-key dired-mode-map (kbd "e") nil)
+  (define-key dired-mode-map (kbd "e c") #'dired-do-copy)
+  (define-key dired-mode-map (kbd "e d") #'dired-do-delete)
+  (define-key dired-mode-map (kbd "e g") #'dired-mark-files-containing-regexp)
+  (define-key dired-mode-map (kbd "e h") #'dired-hide-details-mode)
+  (define-key dired-mode-map (kbd "e m") #'dired-mark-files-regexp)
+  (define-key dired-mode-map (kbd "e n") #'dired-create-directory)
+  (define-key dired-mode-map (kbd "e r") #'dired-do-rename)
+  (define-key dired-mode-map (kbd "e u") #'dired-unmark-all-marks)
+  ;;
+  )
+
+(progn
+  (require 'dired )
+  (add-hook 'dired-mode-hook #'my-dired-init))
+
 ;;load plugins
 ;; Initialize package sources
 (require 'package)
@@ -82,12 +128,19 @@
 (use-package pdf-tools :ensure t)
 
 ;;smex
-(use-package smex :ensure t)
-(global-set-key (kbd "M-x") 'smex)
+(use-package smex
+:ensure t
+:config (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
 
+;;(use-package beacon
+;;:ensure t
+;;:init (beacon-mode 1))
+
+;;dont work well with color scheme
+;;(use-package rainbow-delimiters :ensure t)
 
 (use-package which-key
 :ensure t
@@ -103,7 +156,8 @@
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
    '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd" default))
- '(package-selected-packages '(smex pdf-tools gruber-darker-theme which-key)))
+ '(package-selected-packages
+   '(rainbow-delimiters beacon smex pdf-tools gruber-darker-theme which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
