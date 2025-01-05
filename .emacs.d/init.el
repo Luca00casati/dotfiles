@@ -5,6 +5,13 @@
 (scroll-bar-mode 0)
 (setq ring-bell-function 'ignore)
 
+;;set scroll
+(setq redisplay-dont-pause t
+  scroll-margin 10
+  scroll-step 1
+  scroll-conservatively 10000
+  scroll-preserve-screen-position 1)
+
 ;; Display line numbers in every buffer
 (global-display-line-numbers-mode 1)
 (set-fringe-mode 10)
@@ -103,7 +110,6 @@
   (require 'dired )
   (add-hook 'dired-mode-hook #'my-dired-init))
 
-;;load plugins
 ;; Initialize package sources
 (require 'package)
 
@@ -142,6 +148,11 @@
 ;;dont work well with color scheme
 ;;(use-package rainbow-delimiters :ensure t)
 
+(use-package company
+:ensure t
+:init (company-mode)
+:config (add-hook 'after-init-hook 'global-company-mode))
+
 (use-package which-key
 :ensure t
 :init (which-key-mode) 
@@ -157,7 +168,7 @@
  '(custom-safe-themes
    '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd" default))
  '(package-selected-packages
-   '(rainbow-delimiters beacon smex pdf-tools gruber-darker-theme which-key)))
+   '(company rainbow-delimiters beacon smex pdf-tools gruber-darker-theme which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
