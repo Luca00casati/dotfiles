@@ -16,7 +16,6 @@
 (global-display-line-numbers-mode 1)
 (set-fringe-mode 10)
 (desktop-save-mode 1)
-
 ;;use trash need adjustment for mac
 (setq delete-by-moving-to-trash t)
 
@@ -80,36 +79,6 @@
     (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file ".."))) ; was dired-up-directory
     ))
 
-(defun my-dired-init ()
-  (interactive)
-
-  (define-key dired-mode-map (kbd ",") #'dired-prev-dirline)
-  (define-key dired-mode-map (kbd ".") #'dired-next-dirline)
-
-  (define-key dired-mode-map (kbd "1") #'dired-do-shell-command)
-  (define-key dired-mode-map (kbd "6") #'dired-up-directory)
-  (define-key dired-mode-map (kbd "9") #'dired-hide-details-mode)
-
-  (define-key dired-mode-map (kbd "b") #'dired-do-byte-compile)
-
-  (define-key dired-mode-map (kbd "`") #'dired-flag-backup-files)
-
-  (define-key dired-mode-map (kbd "e") nil)
-  (define-key dired-mode-map (kbd "e c") #'dired-do-copy)
-  (define-key dired-mode-map (kbd "e d") #'dired-do-delete)
-  (define-key dired-mode-map (kbd "e g") #'dired-mark-files-containing-regexp)
-  (define-key dired-mode-map (kbd "e h") #'dired-hide-details-mode)
-  (define-key dired-mode-map (kbd "e m") #'dired-mark-files-regexp)
-  (define-key dired-mode-map (kbd "e n") #'dired-create-directory)
-  (define-key dired-mode-map (kbd "e r") #'dired-do-rename)
-  (define-key dired-mode-map (kbd "e u") #'dired-unmark-all-marks)
-  ;;
-  )
-
-(progn
-  (require 'dired )
-  (add-hook 'dired-mode-hook #'my-dired-init))
-
 ;; Initialize package sources
 (require 'package)
 
@@ -125,36 +94,30 @@
 (package-install 'use-package))
 
 (require 'use-package)
-;;do manualy
-;;(setq use-package-always-ensure t)
+(setq use-package-always-ensure t)
 
-;;(use-package modus-themes)
-(use-package gruber-darker-theme :ensure t)
+(use-package gruber-darker-theme)
 
-(use-package pdf-tools :ensure t)
+(use-package pdf-tools)
+
+(use-package org)
+
+(use-package magit)
+(use-package git-gutter
+  :init (global-git-gutter-mode +1))
 
 ;;smex
 (use-package smex
-:ensure t
 :config (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
 
-;;(use-package beacon
-;;:ensure t
-;;:init (beacon-mode 1))
-
-;;dont work well with color scheme
-;;(use-package rainbow-delimiters :ensure t)
-
 (use-package company
-:ensure t
 :init (company-mode)
 :config (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package which-key
-:ensure t
 :init (which-key-mode) 
 :diminish which-key-mode 
 :config (setq which-key-idle-delay 0.3))
@@ -168,7 +131,7 @@
  '(custom-safe-themes
    '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd" default))
  '(package-selected-packages
-   '(company rainbow-delimiters beacon smex pdf-tools gruber-darker-theme which-key)))
+   '(git-gutter magit company smex pdf-tools gruber-darker-theme which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
