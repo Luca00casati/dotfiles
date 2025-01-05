@@ -11,11 +11,15 @@
 (set-fringe-mode 10)
 (desktop-save-mode 1)
 
+;;use trash need adjustment for mac
+(setq delete-by-moving-to-trash t)
+
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;;font
-;;(set-face-attribute 'default nil :font "Mono" :height 125)
+(set-face-attribute 'default nil :height 125)
+(setq font-use-system-font t)
 
 ;;stop creating files
 (setq make-backup-files nil)
@@ -23,6 +27,9 @@
 
 ;;cua
 (cua-mode t)
+
+;;ido
+(ido-mode t)
 
 ;;pdf
 ;;(setq pdf-view-use-scaling nil)
@@ -66,16 +73,24 @@
 (package-install 'use-package))
 
 (require 'use-package)
-(setq use-package-always-ensure t)
+;;do manualy
+;;(setq use-package-always-ensure t)
 
 ;;(use-package modus-themes)
-(use-package gruber-darker-theme)
+(use-package gruber-darker-theme :ensure t)
 
-(use-package pdf-tools)
+(use-package pdf-tools :ensure t)
 
-(use-package helm)
+;;smex
+(use-package smex :ensure t)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-(use-package which-key 
+
+(use-package which-key
+:ensure t
 :init (which-key-mode) 
 :diminish which-key-mode 
 :config (setq which-key-idle-delay 0.3))
@@ -88,8 +103,7 @@
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
    '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd" default))
- '(package-selected-packages
-   '(pdf-tools helm gruber-darker-theme which-key)))
+ '(package-selected-packages '(smex pdf-tools gruber-darker-theme which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
