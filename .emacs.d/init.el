@@ -3,6 +3,7 @@
 ;;(menu-bar-mode 0)
 ;;(tool-bar-mode 0)
 (scroll-bar-mode 0)
+(tab-bar-mode 1)
 (setq ring-bell-function 'ignore)
 
 ;;set scroll
@@ -11,6 +12,15 @@
   scroll-step 1
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
+
+;; Disable line numbers for some modes
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  eshell-mode-hook
+                  vterm-mode-hook
+                  compilation-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Display line numbers in every buffer
 (global-display-line-numbers-mode 1)
@@ -30,9 +40,6 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
-;;cua
-(cua-mode t)
-
 ;;ido
 (ido-mode t)
 
@@ -42,13 +49,6 @@
 ;;pdf
 ;;(setq pdf-view-use-scaling nil)
 (setq doc-view-resolution 300)
-
-;;disable line number for some modes
-(dolist (mode '(org-mode-hook
-		term-mode-hook
-		shell-mode-hook
-		eshell-mode-hook))
-  (add-hook mode (lambda () (dispalay-line-numbers-mode 0))))
 
 ;;full screen
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -69,40 +69,35 @@
 (setq dired-listing-switches "-alh")
 (setq ls-lisp-dirs-first t)
 ;;(setq ls-lisp-ignore-case t)
+(setq dired-kill-when-opening-new-dired-buffer t)
 
-(when (>= emacs-major-version 28)
-  (setq dired-kill-when-opening-new-dired-buffer t))
-
-(when (< emacs-major-version 28)
-  (progn
-    (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file) ; was dired-advertised-find-file
-    (define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file ".."))) ; was dired-up-directory
-    ))
-
-;; Initialize package sources
-(require 'package)
-
-(setq package-archives '(("melpa" . "https://melpa.org/packages/") 
+(setq package-archives '(
+("melpa" . "https://melpa.org/packages/") 
 ("org" . "https://orgmode.org/elpa/") 
-("elpa" . "https://elpa.gnu.org/packages/")))
+))
 
 (package-initialize)
 (unless package-archive-contents (package-refresh-contents))
 
-;; Initialize use-package on non-Linux platforms
-(unless (package-installed-p 'use-package) 
-(package-install 'use-package))
-
-(require 'use-package)
 (setq use-package-always-ensure t)
 
 (use-package gruber-darker-theme)
 
-(use-package pdf-tools)
+;;(use-package pdf-tools)
 
 (use-package evil)
+  ;;:init (evil-mode 1))
+
+(when (not evil-mode) (cua-mode t))
+
+(use-package doom-themes)
+
+(use-package doom-modeline
+  :config (doom-modeline-mode 1))
 
 (use-package org)
+
+(use-package eglot)
 
 (use-package magit)
 (use-package git-gutter
@@ -131,9 +126,11 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
-   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd" default))
+   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd"
+     default))
  '(package-selected-packages
-   '(evil evil-mode git-gutter magit company smex pdf-tools gruber-darker-theme which-key)))
+   '(company doom-themes evil git-gutter gruber-darker-theme magit smex
+	     which-key)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
