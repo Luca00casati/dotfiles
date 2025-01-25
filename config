@@ -65,6 +65,8 @@ bindsym Mod4+q kill
 bindsym Mod4+r exec wofi -G --show run
 bindsym Mod4+d exec wofi -G --show drun
 
+bindsym Mod4+e exec emacs
+
 # start dmenu (a program launcher)
 #bindsym Mod4+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
