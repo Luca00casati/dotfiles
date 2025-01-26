@@ -66,8 +66,8 @@
 ;;  (recentf-open-files))
 
 ;;dired config
-(setq dired-listing-switches "-alh")
-(setq ls-lisp-dirs-first t)
+(setq dired-listing-switches "-alh --group-directories-first")
+
 ;;(setq ls-lisp-ignore-case t)
 (setq dired-kill-when-opening-new-dired-buffer t)
 
@@ -87,7 +87,6 @@
 
 (use-package evil)
   ;;:init (evil-mode 1))
-
 (when (not evil-mode) (cua-mode t))
 
 (use-package doom-themes)
@@ -126,11 +125,9 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
-   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd"
+   '(
      default))
- '(package-selected-packages
-   '(company doom-themes evil git-gutter gruber-darker-theme magit smex
-	     which-key)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
