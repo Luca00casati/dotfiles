@@ -3,8 +3,10 @@
 ;;(menu-bar-mode 0)
 ;;(tool-bar-mode 0)
 (scroll-bar-mode 0)
-(tab-bar-mode 1)
+;;(tab-bar-mode 1)
 (setq ring-bell-function 'ignore)
+
+(add-to-list 'load-path "~/.emacs.d/load/")
 
 ;;set scroll
 (setq redisplay-dont-pause t
@@ -31,6 +33,9 @@
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+;; repeat motion
+(global-set-key (kbd "C-.") 'repeat)
 
 ;;font
 (set-face-attribute 'default nil :height 125)
@@ -87,16 +92,16 @@
 
 (use-package evil)
   ;;:init (evil-mode 1))
-(when (not evil-mode) (cua-mode t))
-
-(use-package doom-themes)
-
-(use-package doom-modeline
-  :config (doom-modeline-mode 1))
+(if (not evil-mode) (cua-mode t))
 
 (use-package org)
 
-(use-package eglot)
+(use-package rust-mode)
+
+;;lang-mode
+(require 'simpc-mode)
+(add-to-list 'auto-mode-alist '("\\.[ch]\\(pp\\)?\\'" . simpc-mode))
+
 
 (use-package magit)
 (use-package git-gutter
@@ -111,7 +116,9 @@
 
 (use-package company
 :init (company-mode)
-:config (add-hook 'after-init-hook 'global-company-mode))
+:config (setq company-idle-delay 0.1
+        company-minimum-prefix-length 1)
+  :hook (after-init . global-company-mode))
 
 (use-package which-key
 :init (which-key-mode) 
@@ -125,9 +132,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
-   '(
+   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd"
      default))
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '()))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
