@@ -45,9 +45,6 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
-;;ido
-(ido-mode t)
-
 ;;pair
 (electric-pair-mode 1)
 
@@ -96,6 +93,10 @@
 
 (use-package org)
 
+(fido-mode t)
+(use-package icomplete-vertical
+:init (icomplete-vertical-mode t))
+
 (use-package rust-mode)
 
 ;;lang-mode
@@ -108,11 +109,11 @@
   :init (global-git-gutter-mode +1))
 
 ;;smex
-(use-package smex
-:config (global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;;(use-package smex
+;;:config (global-set-key (kbd "M-x") 'smex)
+;;(global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+;;(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
 
 (use-package company
 :init (company-mode)
@@ -135,7 +136,9 @@
    '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd"
      default))
  '(package-selected-packages
-   '()))
+   '(company doom-modeline doom-themes evil git-gutter
+	     gruber-darker-theme icomplete-vertical magit rust-mode
+	     smex tree-sitter treesit-auto)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
