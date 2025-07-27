@@ -19,5 +19,5 @@ style = "Regular"
 
 [general]
 import = [
-    "~/.config/alacritty/themes/themes/hyper.toml"
+    "~/.config/alacritty/theme.toml"
 ]
