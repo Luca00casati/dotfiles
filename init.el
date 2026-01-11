@@ -1,29 +1,18 @@
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file t t)
+;config
+(defun editconfig () (interactive) (find-file-existing user-init-file))
 
-(require 'package)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; use MELPA to package archives
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")))
-
-;; Initialize the package system
-(package-initialize)
-
-;; Refresh package list if needed
-(unless package-archive-contents
-  (package-refresh-contents))
-;;(package-refresh-contents)
-
-;;helper
-(defun usep (pkg)
-(unless (package-installed-p pkg)
-  (package-install pkg)))
-
-;;theme
-(usep 'gruber-darker-theme)
-(load-theme 'gruber-darker)
-
+(set-fringe-mode 10)
+(setq use-short-answers t)
+(setq inhibit-startup-screen t)
+(setq ring-bell-function 'ignore)
+(scroll-bar-mode 0)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(global-display-line-numbers-mode)
+(savehist-mode 1)
+(save-place-mode 1)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq inhibit-splash-screen t)
@@ -31,38 +20,50 @@
 
 (setq initial-scratch-message ";scratch\n")
 
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
-(global-display-line-numbers-mode)
-(savehist-mode 1)
-(save-place-mode 1)
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
 
-;;packages
-(usep 'company)
-(add-hook 'after-init-hook 'global-company-mode)
+(unless package-archive-contents
+  (package-refresh-contents))
 
-(usep 'which-key)
+(defun ensure-package-installed (&rest packages)
+  "Install PACKAGES unless already installed."
+  (mapc
+   (lambda (pkg)
+     (unless (package-installed-p pkg)
+       (package-install pkg)))
+   packages))
 
-(usep 'counsel)
-(usep 'swiper)
-(usep 'ivy)
+(ensure-package-installed
+ 'magit
+ 'yasnippet
+ 'company
+ 'helm
+ 'which-key
+ 'projectile
+ 'gruber-darker-theme
+ )
 
-(setq ivy-use-virtual-buffers t
-      ivy-count-format "%d/%d "
-      ivy-initial-input nil
-      ivy-wrap t
-      ivy-height 15)
+(setq custom-safe-themes t)
 
-(ivy-mode)
+;(require 'gruber-darker-theme)
+;(load-theme 'gruber-darker t)
+(load-theme 'modus-operandi t)
 
-(setq swiper-isearch-full-regex nil)
-(setq counsel-M-x-initial-input "^")
+(require 'which-key)
+(require 'magit)
 
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "C-r") 'swiper)
-(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(require 'helm)
+(helm-mode 1)
+(global-set-key (kbd "M-x") #'helm-M-x)
 
-(usep 'magit)
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(require 'company)
+(setq company-idle-delay 0.2)
+(global-company-mode 1)
+
+(require 'projectile)
+(projectile-mode +1)
