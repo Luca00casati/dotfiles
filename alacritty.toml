@@ -2,19 +2,19 @@
 size = 14.0
 
 [font.bold]
-family = "IosevkaTerm Nerd Font Mono"
+family = "monospace"
 style = "Bold"
 
 [font.bold_italic]
-family = "IosevkaTerm Nerd Font Mono"
+family = "monospace"
 style = "Bold Italic"
 
 [font.italic]
-family = "IosevkaTerm Nerd Font Mono"
+family = "monospace"
 style = "Italic"
 
 [font.normal]
-family = "IosevkaTerm Nerd Font Mono"
+family = "monospace"
 style = "Regular"
 
 # Colors (Hyper)
